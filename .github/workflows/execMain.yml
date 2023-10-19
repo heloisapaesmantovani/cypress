@@ -1,0 +1,28 @@
+name: Cypress Tests Basic Run
+
+on:
+        pull_request:
+                branches:
+                - main
+jobs:
+        chrome:
+            runs-on: ubuntu-latest
+            name: E2E on Chrome
+            steps:
+              # clone do projeto
+              - name: Checkout/Clone do Projeto
+                uses: actions/checkout@v4
+              # instalar dependências necessárias para executar o projeto
+              - name: Instalar dependências do projeto
+                run: npm install
+              # execução dos testes
+              - name: Cypress run
+                uses: cypress-io/github-action@v6
+                with:
+                  browser: chrome
+                  record: true
+                env:
+                  # pass the Cypress Cloud record key as an environment variable
+                  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                  # pass GitHub token to allow accurately detecting a build vs a re-run build
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
